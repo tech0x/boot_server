@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  uwsgi:
+    restart: always
+    build: .uwsgi/.
+    image: "uwsgi"
+    stdin_open: true
+    tty: true
+    command: sh -c "cd /app ; uwsgi --socket 127.0.0.1:9999 --wsgi-file site.py --master --processes 4 --threads 2 -w wsgi:app"
+    volumes:
+      - ./app:/app/
+    network_mode: "host"

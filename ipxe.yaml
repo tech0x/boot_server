@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  ipxe:
+    build: .ipxe/.
+    image: "ipxe"
+    stdin_open: true
+    tty: true
+    #command: sh -c "cd /src/ ; tar -xzf ./ipxe.tar.gz ; cd /src/ipxe/src ; make -j4 -l4 bin/undionly.kpxe EMBED=/src/local.ipxe DEBUG=iscsi ; cp bin/undionly.kpxe /tftpboot/local.kpxe; "
+    command: sh -c "cd /src/ ; tar -xzf ./ipxe.tar.gz ; cd /src/ipxe/src ; make -j4 -l4 bin/ipxe.kpxe EMBED=/src/local.ipxe DEBUG=iscsi ; cp bin/ipxe.kpxe /tftpboot/local.kpxe; "
+    volumes:
+      - ./src:/src/
+      - ./tftpboot:/tftpboot/
+    network_mode: "host"

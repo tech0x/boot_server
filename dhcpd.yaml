@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  dhcpd:
+    restart: always
+    build: .dhcpd/.
+    image: "dhcpd"
+    stdin_open: true
+    tty: true
+    command: sh -c "dhcpd -d"
+    volumes:
+      - ./etc/dhcp:/etc/dhcp/
+      - ./etc/dhcp/dhcpd.leases:/var/lib/dhcp/dhcpd.leases
+      - ./etc/dhcp/isc-dhcp-server:/etc/default/isc-dhcp-server
+    network_mode: "host"

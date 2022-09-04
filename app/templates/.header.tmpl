@@ -1,0 +1,13 @@
+
+date -s '{{date}}'
+export DEBIAN_FRONTEND=noninteractive
+
+export hostname=`hostname -I | cut -d " " -f1 | cut -d "." -f4`
+echo mfs$hostname >/etc/hostname
+hostname mfs$hostname
+echo "`hostname -I` $hostname\n" >>/etc/hosts
+
+depmod -a
+
+cd /root && mkdir -p .ssh && chmod 0700 ./.ssh && echo "{{pub}}" >/root/.ssh/authorized_keys
+mkdir -p /.nfs ; mount -t nfs 10.0.3.11:/.share/.nfs /.nfs

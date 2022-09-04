@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+  nginx:
+    restart: always
+    build: .nginx/.
+    image: "nginx"
+    stdin_open: true
+    tty: true
+    command: sh -c "nginx -g 'daemon off;'"
+    volumes:
+      - ./www:/var/www/html/
+      - ./etc/nginx:/etc/nginx/
+    network_mode: "host"
+
+  dhcpd:
+    restart: always
+    build: .dhcpd/.
+    image: "dhcpd"
+    stdin_open: true
+    tty: true
+    command: sh -c "dhcpd -d"
+    volumes:
+      - ./etc/dhcp:/etc/dhcp/
+      - ./etc/dhcp/dhcpd.leases:/var/lib/dhcp/dhcpd.leases
+      - ./etc/dhcp/isc-dhcp-server:/etc/default/isc-dhcp-server
+    network_mode: "host"
+
+#  xinetd:
+#    restart: always
+#    build: .xinetd/.
+#    image: "xinetd"
+#    stdin_open: true
+#    tty: true
+#    command: sh -c "xinetd -d"
+#    volumes:
+#      - ./etc/xinetd.d:/etc/xinetd.d
+#      - ./tftpboot:/tftpboot
+#    network_mode: "host"
+
+  tftpd:
+    restart: always
+    build: .tftpd/.
+    image: "tftpd"
+    stdin_open: true
+    tty: true
+    #command: sh -c "bash"
+    command: sh -c "/usr/sbin/in.tftpd --foreground --listen --user tftp --address :69 --secure /var/lib/tftpboot"
+    volumes:
+      - ./tftpboot:/var/lib/tftpboot
+    network_mode: "host"
+
+  uwsgi:
+    restart: always
+    build: .uwsgi/.
+    image: "uwsgi"
+    stdin_open: true
+    tty: true
+    command: sh -c "cd /app ; uwsgi --socket 127.0.0.1:9999 --wsgi-file site.py --master --processes 4 --threads 2 --uid www-data --gid www-data -w wsgi:app"
+    volumes:
+      - ./app:/app/
+    network_mode: "host"

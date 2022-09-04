@@ -1,0 +1,12 @@
+#!ipxe
+
+set url boot?mac=${net0/mac}&asset=${asset:uristring}
+
+:retry_dhcp
+  dhcp && isset ${url} || goto retry_dhcp
+  echo Booting ${url}
+  chain http://10.0.3.11:799/${url} || chain http://10.0.3.240:799/${url}
+  imgstat
+
+boot || goto retry_dhcp
+#shell

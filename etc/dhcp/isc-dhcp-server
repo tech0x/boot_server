@@ -1,0 +1,12 @@
+
+#DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
+#DHCPDv6_CONF=/etc/dhcp/dhcpd6.conf
+
+#DHCPDv4_PID=/var/run/dhcpd.pid
+#DHCPDv6_PID=/var/run/dhcpd6.pid
+
+#	Don't use options -cf or -pf here; use DHCPD_CONF/ DHCPD_PID instead
+OPTIONS="-4"
+
+#INTERFACESv4=""
+#INTERFACESv6=""

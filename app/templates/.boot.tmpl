@@ -1,0 +1,7 @@
+#!ipxe
+
+{% if mac %}
+set base http://{{server}}
+{% include mac+'.boot' %}
+{% endif %}
+boot
