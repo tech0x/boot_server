@@ -9,3 +9,4 @@
 4. Place boot config in app/templates mac.boot
 5. Place run config in app/templates mac.config
 6. Run ./docker-compose up --build
+7. On the boot clients. Enable in bios boot pxe in legacy mode and reboot client host.
